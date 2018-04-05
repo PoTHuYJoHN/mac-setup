@@ -1,0 +1,7 @@
+alias ssh_copy="cat ~/.ssh/id_rsa.pub | pbcopy"
+
+alias tc="cd /Users/ivankolodiy/code/tenantcloud.com"
+alias art="php artisan"
+alias tc_io="tc && node redis/server_nginx.js"
+alias tc_q="tc && php artisan queue:work --queue='high,default,low,export' --tries=2"
+alias gs="git status"
