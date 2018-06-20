@@ -1,7 +1,60 @@
-alias ssh_copy="cat ~/.ssh/id_rsa.pub | pbcopy"
-
+# TC
 alias tc="cd /Users/ivankolodiy/code/tenantcloud.com"
-alias art="php artisan"
 alias tc_io="tc && node redis/server_nginx.js"
-alias tc_q="tc && php artisan queue:work --queue='high,default,low,export' --tries=2"
+alias tc_dir="tc && sudo chmod -R 777 storage && sudo chmod -R 777 public/assets"
+alias tc_unit="tc && vendor/bin/phpunit"
+
+# PHP & Laravel
+alias art="php artisan"
+alias comp="composer dump-autoload -o"
+
+# Git aliases
 alias gs="git status"
+alias gl="git log"
+alias ga="git add ."
+alias gc="git commit -m "
+alias gp="git push"
+alias ghard="git reset --hard && git clean -df"
+
+# SSH
+alias ssh_copy="cat ~/.ssh/id_rsa.pub | pbcopy"
+alias ssh_loc="ssh -i ~/ukietech.pem ukietech@192.168.1.12"
+alias ssh_tc_old="ssh -i ~/tenantcloud_new.pem ubuntu@54.149.32.26 && cd /storage/www/tenantcloud.com/production/dashboard"
+alias ssh_tc="ssh ubuntu@54.149.212.136"
+alias ssh_kvm="ssh dev@91.234.32.37"
+
+# MYSQL
+alias sql_up="mysql.server start"
+alias sql_down="mysql.server stop"
+
+
+# OTHER
+alias shrug="echo '¯\_(ツ)_/¯' | pbcopy";
+alias copyssh="pbcopy < $HOME/.ssh/id_rsa.pub"
+alias reloadterm="source $HOME/.zshrc"
+alias ..="cd ../"
+alias ...="cd ../../"
+alias ....="cd ../../../"
+alias .....="cd ../../../../"
+alias weather="curl -1 wttr.in/Ивано-Франковск"
+alias npm_reinstall="rm -rf node_modules && npm i"
+
+# BACKUPS
+BKP_DATE=$(date +"%Y%m%d")
+alias tcbkp_copy="scp tc_prod:/tmp/tenantcloud_$BKP_DATE.sql.gz ~/Google\ Drive/TEMP/tenantcloud_$BKP_DATE.sql.gz"
+
+function copy_tc_log() {
+    scp tc_prod:/storage/www/tenantcloud.com/production/storage/logs/laravel-apache2handler-"$1".log ~/Downloads/
+}
+
+
+function tc_log() {
+    echo '                                                                                                                               ';
+    echo ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::FPM::::::::::::::::::::::::::::::::::::::::::::::::::::::;
+    echo '                                                                                                                               ';
+    tc && tail storage/logs/laravel-fpm-fcgi-$(date +"%Y-%m-%d").log;
+    echo '                                                                                                                               ';
+    echo ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::CLI::::::::::::::::::::::::::::::::::::::::::::::::::::::;
+    echo '                                                                                                                               ';
+    tc && tail storage/logs/laravel-cli-$(date +"%Y-%m-%d").log;
+}
