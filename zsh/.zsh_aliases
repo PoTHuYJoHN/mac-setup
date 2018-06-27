@@ -6,67 +6,6 @@ alias tc_io="tc && node redis/server_nginx.js"
 alias tc_dir="tc && sudo chmod -R 777 storage && sudo chmod -R 777 public/assets"
 alias tc_unit="tc && vendor/bin/phpunit"
 
-# PHP & Laravel
-alias art="php artisan"
-alias comp="composer dump-autoload -o"
-
-# Git aliases
-alias gs="git status"
-alias gl="git log"
-alias ga="git add ."
-alias gc="git commit -m "
-alias gp="git push"
-alias ghard="git reset --hard && git clean -df"
-
-# SSH
-alias sshconfig="${EDITOR:-nano} ~/.ssh/config"
-alias ssh_copy="cat ~/.ssh/id_rsa.pub | pbcopy"
-alias ssh_kvm="ssh dev@91.234.32.37"
-
-# MYSQL
-alias sql_up="mysql.server start"
-alias sql_down="mysql.server stop"
-
-
-# OTHER
-alias shrug="echo '¯\_(ツ)_/¯' | pbcopy";
-alias copyssh="pbcopy < $HOME/.ssh/id_rsa.pub"
-alias reloadterm="source $HOME/.zshrc"
-alias weather="curl -1 wttr.in/Ивано-Франковск"
-alias npm_reinstall="rm -rf node_modules && npm i"
-alias h='history'
-alias cl="clear;ls;pwd"
-alias json="python -m json.tool"
-alias cp='cp -iv'                           # Preferred 'cp' implementation
-alias mv='mv -iv'                           # Preferred 'mv' implementation
-alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
-alias ll='ls -FGlAhp'                       # Preferred 'ls' implementation
-mcd () { mkdir -p "$1" && cd "$1"; }
-help () { /usr/bin/grep --color=always -i -a1 $@ ~/.zsh_aliases | grep -v '^\s*$' | less -FSRXc ; }
-alias edit_aliases="nano +9999999 ~/.zsh_aliases"
-
-cd() { builtin cd "$@"; ll; }               # Always list directory contents upon 'cd'
-alias cd..='cd ../'                         # Go back 1 directory level (for fast typers)
-alias ..='cd ../'                           # Go back 1 directory level
-alias ...='cd ../../'                       # Go back 2 directory levels
-alias .3='cd ../../../'                     # Go back 3 directory levels
-alias .4='cd ../../../../'                  # Go back 4 directory levels
-alias .5='cd ../../../../../'               # Go back 5 directory levels
-alias .6='cd ../../../../../../'            # Go back 6 directory levels
-
-# Date & Time
-alias d='date +%F'
-alias now='date +"%F___%T"'
-
-# BACKUPS
-BKP_DATE=$(date +"%Y%m%d")
-alias tcbkp_copy="scp tc_prod:/tmp/tenantcloud_$BKP_DATE.sql.gz ~/Google\ Drive/TEMP/tenantcloud_$BKP_DATE.sql.gz"
-
-function copy_tc_log() {
-    scp tc_prod:/storage/www/tenantcloud.com/production/storage/logs/laravel-apache2handler-"$1".log ~/Downloads/
-}
-
-
 function tc_log() {
     echo '                                                                                                                               ';
     echo ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::FPM::::::::::::::::::::::::::::::::::::::::::::::::::::::;
@@ -78,6 +17,36 @@ function tc_log() {
     tc && tail storage/logs/laravel-cli-$(date +"%Y-%m-%d").log;
 }
 
+# PHP & Laravel
+alias art="php artisan"
+alias comp="composer dump-autoload -o"
+
+# Git aliases
+alias gs="git status"
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+alias ga="git add ."
+alias gc="git commit -m "
+alias gp="git push"
+alias nah="git reset --hard && git clean -df"
+
+# SSH
+alias sshconfig="${EDITOR:-nano} ~/.ssh/config"
+alias ssh_copy="cat ~/.ssh/id_rsa.pub | pbcopy"
+alias ssh_kvm="ssh dev@91.234.32.37"
+
+# MYSQL
+alias sql_up="mysql.server start"
+alias sql_down="mysql.server stop"
+
+# Date & Time
+alias d='date +%F'
+alias now='date +"%F___%T"'
+
+# BACKUPS
+BKP_DATE=$(date +"%Y%m%d")
+alias tcbkp_copy="scp tc_prod:/tmp/tenantcloud_$BKP_DATE.sql.gz ~/Google\ Drive/TEMP/tenantcloud_$BKP_DATE.sql.gz"
+
+# Get WAN IP and local Wireless and Wired if exists
 function myip()
 {
     extIp=$(dig +short myip.opendns.com @resolver1.opendns.com)
@@ -107,8 +76,9 @@ function repeat()
     done
 }
 
-
 # Utilities
+alias path='echo -e ${PATH//:/\\n}'
+
 function free {
     top -l 1 -s 0 | grep PhysMem | sed s/PhysMem/RAM/
 }
@@ -136,8 +106,6 @@ extract () {
     fi
 }
 
-alias path='echo -e ${PATH//:/\\n}'
-
 #   ii:  display useful host related informaton
 #   -------------------------------------------------------------------
 ii() {
@@ -151,3 +119,32 @@ ii() {
     #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
     echo
 }
+
+# OTHER
+cd() { builtin cd "$@"; ll; }               # Always list directory contents upon 'cd'
+alias cd..='cd ../'                         # Go back 1 directory level (for fast typers)
+alias ..='cd ../'                           # Go back 1 directory level
+alias ...='cd ../../'                       # Go back 2 directory levels
+alias .3='cd ../../../'                     # Go back 3 directory levels
+alias .4='cd ../../../../'                  # Go back 4 directory levels
+alias .5='cd ../../../../../'               # Go back 5 directory levels
+alias .6='cd ../../../../../../'            # Go back 6 directory levels
+
+alias reloadterm="source $HOME/.zshrc"
+alias weather="curl -1 wttr.in/Ивано-Франковск"
+alias npm_reinstall="rm -rf node_modules && npm i"
+alias h='history'
+alias cl="clear;ls;pwd"
+alias json="python -m json.tool"
+alias cp='cp -iv'                           # Preferred 'cp' implementation
+alias mv='mv -iv'                           # Preferred 'mv' implementation
+alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
+alias ll='ls -FGlAhp'                       # Preferred 'ls' implementation
+mcd () { mkdir -p "$1" && cd "$1"; }
+help () { /usr/bin/grep --color=always -i -a1 $@ ~/.zsh_aliases | grep -v '^\s*$' | less -FSRXc ; }
+alias edit_aliases="nano +9999999 ~/.zsh_aliases"
+
+alias shrug="echo '¯\_(ツ)_/¯' | pbcopy";
+alias fight="echo '(ง'̀-'́)ง' | pbcopy";
+alias cat="echo '(=^··^=)' | pbcopy"
+
