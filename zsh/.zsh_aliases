@@ -1,5 +1,5 @@
 # TC
-alias tc="cd /Users/ivankolodiy/code/tenantcloud.com"
+alias tc="cd /Users/ivan/code/www/tenantcloud.com"
 alias tc_io="tc && node redis/server_nginx.js"
 alias tc_dir="tc && sudo chmod -R 777 storage && sudo chmod -R 777 public/assets"
 alias tc_unit="tc && vendor/bin/phpunit"
@@ -17,10 +17,8 @@ alias gp="git push"
 alias ghard="git reset --hard && git clean -df"
 
 # SSH
+alias sshconfig="${EDITOR:-nano} ~/.ssh/config"
 alias ssh_copy="cat ~/.ssh/id_rsa.pub | pbcopy"
-alias ssh_loc="ssh -i ~/ukietech.pem ukietech@192.168.1.12"
-alias ssh_tc_old="ssh -i ~/tenantcloud_new.pem ubuntu@54.149.32.26 && cd /storage/www/tenantcloud.com/production/dashboard"
-alias ssh_tc="ssh ubuntu@54.149.212.136"
 alias ssh_kvm="ssh dev@91.234.32.37"
 
 # MYSQL
@@ -32,12 +30,31 @@ alias sql_down="mysql.server stop"
 alias shrug="echo '¯\_(ツ)_/¯' | pbcopy";
 alias copyssh="pbcopy < $HOME/.ssh/id_rsa.pub"
 alias reloadterm="source $HOME/.zshrc"
-alias ..="cd ../"
-alias ...="cd ../../"
-alias ....="cd ../../../"
-alias .....="cd ../../../../"
 alias weather="curl -1 wttr.in/Ивано-Франковск"
 alias npm_reinstall="rm -rf node_modules && npm i"
+alias h='history'
+alias cl="clear;ls;pwd"
+alias json="python -m json.tool"
+alias cp='cp -iv'                           # Preferred 'cp' implementation
+alias mv='mv -iv'                           # Preferred 'mv' implementation
+alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
+alias ll='ls -FGlAhp'                       # Preferred 'ls' implementation
+mcd () { mkdir -p "$1" && cd "$1"; }
+help () { /usr/bin/grep --color=always -i -a1 $@ ~/.zsh_aliases | grep -v '^\s*$' | less -FSRXc ; }
+alias edit_aliases="nano +9999999 ~/.zsh_aliases"
+
+cd() { builtin cd "$@"; ll; }               # Always list directory contents upon 'cd'
+alias cd..='cd ../'                         # Go back 1 directory level (for fast typers)
+alias ..='cd ../'                           # Go back 1 directory level
+alias ...='cd ../../'                       # Go back 2 directory levels
+alias .3='cd ../../../'                     # Go back 3 directory levels
+alias .4='cd ../../../../'                  # Go back 4 directory levels
+alias .5='cd ../../../../../'               # Go back 5 directory levels
+alias .6='cd ../../../../../../'            # Go back 6 directory levels
+
+# Date & Time
+alias d='date +%F'
+alias now='date +"%F___%T"'
 
 # BACKUPS
 BKP_DATE=$(date +"%Y%m%d")
@@ -57,4 +74,78 @@ function tc_log() {
     echo ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::CLI::::::::::::::::::::::::::::::::::::::::::::::::::::::;
     echo '                                                                                                                               ';
     tc && tail storage/logs/laravel-cli-$(date +"%Y-%m-%d").log;
+}
+
+function myip()
+{
+    extIp=$(dig +short myip.opendns.com @resolver1.opendns.com)
+
+    printf "Wireless IP: "
+    MY_IP=$(ipconfig getifaddr en0)
+    echo ${MY_IP:-"Not connected"}
+
+
+    printf "Wired IP: "
+    MY_IP=$(ipconfig getifaddr en1)
+    echo ${MY_IP:-"Not connected"}
+
+    echo ""
+    echo "WAN IP: $extIp"
+
+}
+
+# Syntax: "repeat [X] [command]"
+function repeat()      
+{
+    local i max
+    max=$1; shift;
+
+    for ((i=1; i <= max ; i++)); do  # --> C-like syntax
+	eval "$@";
+    done
+}
+
+
+# Utilities
+function free {
+    top -l 1 -s 0 | grep PhysMem | sed s/PhysMem/RAM/
+}
+
+#   extract:  Extract most know archives with one command
+#   ---------------------------------------------------------
+extract () {
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2)   tar xjf $1     ;;
+            *.tar.gz)    tar xzf $1     ;;
+            *.bz2)       bunzip2 $1     ;;
+            *.rar)       unrar e $1     ;;
+            *.gz)        gunzip $1      ;;
+            *.tar)       tar xf $1      ;;
+            *.tbz2)      tar xjf $1     ;;
+            *.tgz)       tar xzf $1     ;;
+            *.zip)       unzip $1       ;;
+            *.Z)         uncompress $1  ;;
+            *.7z)        7z x $1        ;;
+            *)     echo "'$1' cannot be extracted via extract()" ;;
+             esac
+    else
+         echo "'$1' is not a valid file"
+    fi
+}
+
+alias path='echo -e ${PATH//:/\\n}'
+
+#   ii:  display useful host related informaton
+#   -------------------------------------------------------------------
+ii() {
+    echo -e "\nYou are logged on ${RED}$HOST"
+    echo -e "\nAdditionnal information:$NC " ; uname -a
+    echo -e "\n${RED}Users logged on:$NC " ; w -h
+    echo -e "\n${RED}Current date :$NC " ; date
+    echo -e "\n${RED}Machine stats :$NC " ; uptime
+    echo -e "\n${RED}Current network location :$NC " ; scselect
+    echo -e "\n${RED}Public facing IP Address :$NC " ;myip
+    #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
+    echo
 }
