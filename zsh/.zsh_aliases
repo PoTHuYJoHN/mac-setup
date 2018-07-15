@@ -31,7 +31,7 @@ alias nah="git reset --hard && git clean -df"
 
 # SSH
 alias sshconfig="${EDITOR:-nano} ~/.ssh/config"
-alias ssh_copy="cat ~/.ssh/id_rsa.pub | pbcopy"
+alias ssh_copy="pbcopy < ~/.ssh/id_rsa.pub"
 alias ssh_kvm="ssh dev@91.234.32.37"
 
 # MYSQL
