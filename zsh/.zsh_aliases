@@ -1,25 +1,26 @@
 #!/bin/bash
 
+# KP
+alias kp="cd /Users/ivan/code/www/api.keller-pro.com"
+
 # TC
-alias tc="cd /Users/ivan/code/www/tenantcloud.com"
-alias tc_io="tc && node redis/server_nginx.js"
+alias tc="cd /Users/ivan/code/www/home.tenantcloud.com"
 alias tc_dir="tc && sudo chmod -R 777 storage && sudo chmod -R 777 public/assets"
-alias tc_unit="tc && vendor/bin/phpunit"
 
 function tc_log() {
-    echo '                                                                                                                               ';
-    echo ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::FPM::::::::::::::::::::::::::::::::::::::::::::::::::::::;
-    echo '                                                                                                                               ';
-    tc && tail storage/logs/laravel-fpm-fcgi-$(date +"%Y-%m-%d").log;
-    echo '                                                                                                                               ';
-    echo ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::CLI::::::::::::::::::::::::::::::::::::::::::::::::::::::;
-    echo '                                                                                                                               ';
-    tc && tail storage/logs/laravel-cli-$(date +"%Y-%m-%d").log;
+    tc;
+
+    linesNumber=${1:-100};
+    echo '                                                                                                                                    ';
+    echo ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::LOG TAIL::::::::::::::::::::::::::::::::::::::::::::::::::::::;
+    echo '                                                                                                                                    ';
+    tail -$linesNumber storage/logs/laravel-$(date +"%Y-%m-%d").log;
 }
 
 # PHP & Laravel
 alias art="php artisan"
 alias comp="composer dump-autoload -o"
+alias unit="vendor/bin/phpunit"
 
 # Git aliases
 alias gs="git status"
@@ -144,7 +145,23 @@ mcd () { mkdir -p "$1" && cd "$1"; }
 help () { /usr/bin/grep --color=always -i -a1 $@ ~/.zsh_aliases | grep -v '^\s*$' | less -FSRXc ; }
 alias edit_aliases="nano +9999999 ~/.zsh_aliases"
 
-alias shrug="echo '¯\_(ツ)_/¯' | pbcopy";
-alias fight="echo '(ง'̀-'́)ง' | pbcopy";
-alias cat="echo '(=^··^=)' | pbcopy"
+alias e_shrug="echo '¯\_(ツ)_/¯' | pbcopy";
+alias e_fight="echo '(ง'̀-'́)ง' | pbcopy";
+alias e_cat="echo '(=^··^=)' | pbcopy"
 
+alias ngx="cd /usr/local/etc/nginx"
+
+alias xdebug_c="export XDEBUG_CONFIG=idekey=PHPSTORM profiler_enable=1"
+
+
+# other stuff
+function run_pipeline()
+{
+    cd /Users/ivan/code/pipeline
+    git archive --remote=ssh://git@bitbucket.org/tenantcloud/home.tenantcloud.com.git --format=zip --output="tenantcloud.zip" $1
+    unzip tenantcloud.zip -d $1
+    rm tenantcloud.zip
+    docker run --rm -it -v /Users/ivan/code/pipeline/$1:/var/www/html tenantcloud/pipeline bash /var/www/html/sh/pipeline.sh
+    ## or run unit test and stop on failure
+    # docker run --rm -it -v /Users/ivan/code/pipeline/$1:/var/www/html tenantcloud/pipeline /pipeline-on-failure.sh
+}
