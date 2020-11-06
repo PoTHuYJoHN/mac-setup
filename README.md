@@ -12,7 +12,8 @@ Add hotkey for window switching.
 `Preferences->Keyboard->Shortcuts->Keyboard->Move focus to next window`
 
 ### Generate SSH key
-Generate ssh keys using `ssh-keygen` command or copy existing one. Then add them to bitbucket/github account
+1. Generate ssh keys using `ssh-keygen` command or copy existing one. Then add them to bitbucket/github account
+2. Copy existing ssh config to `~/.ssh/config`
 
 ### Enable showing hidden files in Finder
 ```
