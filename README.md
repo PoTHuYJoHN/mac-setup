@@ -28,6 +28,10 @@ brew tap teamookla/speedtest
 brew update
 brew install speedtest --force
 ```
+Install cli tool for docker containers
+```
+brew install ctop
+```
 
 ## Transfer setting to a new Mac
 
