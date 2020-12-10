@@ -33,6 +33,11 @@ Install cli tool for docker containers
 brew install ctop
 ```
 
+Install utilities
+```
+brew install wget
+```
+
 ## Transfer setting to a new Mac
 
 ### Iterm2/3
