@@ -50,4 +50,4 @@ Make sure if you installed all plugins
 Import config from this repo
 
 ## Install additional sofware using ansible or manually
-Docker, slack, telegram, authy, wireguard, table plus
+Docker, slack, telegram, authy, wireguard, table plus, qtorrent, keka
