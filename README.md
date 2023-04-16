@@ -28,14 +28,9 @@ brew tap teamookla/speedtest
 brew update
 brew install speedtest --force
 ```
-Install cli tool for docker containers
+Install some software via brew and brew cask
 ```
-brew install ctop
-```
-
-Install utilities
-```
-brew install wget
+brew install wget ctop slack tableplus telegram ticktick keka
 ```
 
 ## Transfer setting to a new Mac
@@ -52,7 +47,7 @@ Make sure if you installed all plugins
 `git osx brew laravel zsh-autosuggestions`
 
 ### PHPstorm
-Import config from this repo
+Import config from this repo (can be skipped as it is a bit outdated)
 
 ## Install additional sofware using ansible or manually
-Docker, slack, telegram, authy, wireguard, table plus, qtorrent, keka
+Docker, authy, wireguard, qtorrent
